@@ -1,0 +1,98 @@
+﻿@model IEnumerable<GymManagemarntSystem.Models.customer>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<script src="~/AdminPanel/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+<style>
+    table thead tr th {
+        font-family: Arabia;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table tbody tr td {
+        text-align: center;
+        font-family: Arial;
+    }
+</style>
+
+
+
+<h2>العملاء</h2>
+
+
+
+<h2>بحث عن عميل</h2>
+
+
+
+<center>
+
+    @using (Html.BeginForm("SearchByPhone", "Customer", FormMethod.Get))
+    {
+
+        <input type="text" name="phone" id="search" class="focus" style="padding:10px;text-align:center" placeholder="بحث عن عميل" />
+
+        <input type="submit" class="btn btn-primary" value="بحث" />
+    }
+
+</center>
+
+
+<table class="table table-hover table-bordered table-responsive">
+
+    <thead>
+        <tr>
+            <th>رقم العميل</th>
+            <th>اسم العميل</th>
+            <th>رقم الموبايل</th>
+            <th>الطول</th>
+            <th>الوزن</th>
+            <th>بداية الاشتراك</th>
+            <th>نهاية الاشتراك</th>
+            <th>الصورة الشخصية</th>
+            
+            <th>نوع الاشتراك</th>
+            <th>تعديل</th>
+            <th>حذف</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr class="active">
+
+                <td>@item.ID</td>
+                <td>@item.Name</td>
+                <td>@item.Phone</td>
+                <td>@item.Height</td>
+                <td>@item.Weight</td>
+                <td>@item.Startdate.Value.ToString("yyyy/MM/dd")</td>
+                <td>@item.Enddate.Value.ToString("yyyy/MM/dd")</td>
+                <td><a href="~/images/@item.Photo" class="glyphicon glyphicon-camera"></a></td>
+               
+                <td> @item.subscriptionType.subscription_name </td>
+                <td> <a href="/Customer/Edite/@item.ID"> <input type="button" class="btn btn-primary" value="تعديل" /> </a> </td>
+                <td> <a href="Customer/Delete/@item.ID"> <input type="button" class="btn btn-danger" value="حذف" /> </a> </td>
+
+            </tr>
+
+        }
+
+    </tbody>
+
+
+    <tfoot>
+
+    </tfoot>
+
+
+</table>

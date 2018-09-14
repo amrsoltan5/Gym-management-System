@@ -1,0 +1,83 @@
+﻿@model IEnumerable<GymManagemarntSystem.Models.spGetNonValide_Result>
+
+@{
+    ViewBag.Title = "GetNonValid";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+
+<style>
+    table thead tr th {
+        font-family: Arabia;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table tbody tr td {
+        text-align: center;
+        font-family: Arial;
+    }
+</style>
+
+
+<h2>العملاء الغير مفعلين</h2>
+
+
+<div id="collapse4" class="body">
+    <div id="dataTable_wrapper" class="row">
+        <div class="col-sm-12">
+            <table id="dataTable" class="table table-bordered table-condensed table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTable_info">
+                <thead>
+                    <tr>
+                        <th>رقم العميل</th>
+                        <th>اسم العميل</th>
+                        <th>رقم الموبايل</th>
+                        <th>الطول</th>
+                        <th>الوزن</th>
+                        <th>بداية الاشتراك</th>
+                        <th>نهاية الاشتراك</th>
+                        <th>الصورة الشخصية</th>
+
+                        <th>تعديل</th>
+                        <th>حذف</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr class="active">
+
+                            <td>@item.ID</td>
+                            <td>@item.Name</td>
+                            <td>@item.Phone</td>
+                            <td>@item.Height</td>
+                            <td>@item.Weight</td>
+                            <td>@item.Startdate.Value.ToString("yyyy/MM/dd")</td>
+                            <td>@item.Enddate.Value.ToString("yyyy/MM/dd")</td>
+                            @if (@item.Photo != null)
+                            {
+                                <td><a href="~/images/@item.Photo" class="glyphicon glyphicon-camera"></a></td>
+                            }
+                            else
+                            {
+                                <td>@Html.Label("لا يوجد ")</td>
+                            }
+
+                            <td> <a href="/Customer/Edite/@item.ID"> <input type="button" class="btn btn-primary" value="تعديل" /> </a> </td>
+                            <td> <a href="/Customer/Delete/@item.ID"> <input type="button" class="btn btn-danger" value="حذف" /> </a> </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,147 @@
+﻿@model GymManagemarntSystem.Models.customer
+
+@{
+    ViewBag.Title = "SearchByPhone";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<script src="~/AdminPanel/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+<script>
+
+    $(function () {
+
+      
+        $.ajax({
+
+            url: "/Customer/CheckAttend",
+            data: {id:$("#Attendval").val()},
+            success: function (data) {
+
+                if(data==true)
+                {
+                    $("#Attend").addClass("disabled");
+                }
+               
+            }
+        });
+
+
+
+        $("#Attend").click(function () {
+
+            $.ajax({
+
+                url: "/Customer/Attend",
+                data: { id:$("#Attendval").val()},
+                success: function (data) {
+
+                    if(data==true)
+                    {
+                        $("#Attend").addClass("disabled");
+                    }
+                    else
+                    {
+                        $("#Attend").addClass("disabled");
+                    }
+
+                }
+
+            });
+
+        });
+
+
+    });
+
+
+</script>
+
+
+<style>
+    table thead tr th {
+        font-family: Arabia;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table tbody tr td {
+        text-align: center;
+        font-family: Arial;
+    }
+</style>
+
+<h2>بحث عن عميل</h2>
+
+@if (Model != null)
+{
+    <table class="table table-hover table-bordered table-responsive">
+
+        <thead>
+            <tr>
+                <th>رقم العميل</th>
+                <th>اسم العميل</th>
+                <th>رقم الموبايل</th>
+                <th>الطول</th>
+                <th>الوزن</th>
+                <th>بداية الاشتراك</th>
+                <th>نهاية الاشتراك</th>
+                <th>الصورة الشخصية</th>
+                <th> الحضور </th>
+                <th> تجديد الاشتراك  </th>
+                <th>نوع الاشتراك</th>
+                <th>حالة الاشتراك</th>
+                <th>تعديل</th>
+                <th>حذف</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+             <tr class="active">
+
+                    <td>@Model.ID</td>
+                    <td>@Model.Name</td>
+                    <td>@Model.Phone</td>
+                    <td>@Model.Height</td>
+                    <td>@Model.Weight</td>
+                    <td>@Model.Startdate.Value.ToString("yyyy/MM/dd")</td>
+                    <td>@Model.Enddate.Value.ToString("yyyy/MM/dd")</td>
+                    <td><a href="~/images/@Model.Photo"  class="glyphicon glyphicon-camera"></a></td>
+                    <td> <input id="Attendval" type="hidden" value="@Model.ID" /> <input type="button" class="btn btn-primary" value="تسجيل حضور" id="Attend" /> </td>
+                    <td> <a href="/Customer/Extend/@Model.ID" class="glyphicon glyphicon-dashboard"> </a>   </td>
+                    <td> @Model.subscriptionType.subscription_name </td>
+                    <td> @if(Model.Enddate.Value <= DateTime.Now.Date)
+                    {
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                    }
+                    else
+                    {
+                        <span class="glyphicon glyphicon-star"></span>
+                    }
+
+                     </td>
+                    <td> <a href="/Customer/Edite/@Model.ID"> <input type="button" class="btn btn-primary" value="تعديل" /> </a> </td>
+                    <td> <a href="/Customer/Delete/@Model.ID"> <input type="button" class="btn btn-danger" value="حذف" /> </a> </td>
+
+                </tr>
+
+
+        </tbody>
+
+
+        <tfoot>
+
+        </tfoot>
+
+
+    </table>
+
+}
+else
+
+{
+    <center> لا يوجد عميل مسجل بهذا الرقم </center>
+}

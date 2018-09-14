@@ -1,0 +1,104 @@
+﻿@model GymManagemarntSystem.Models.CustomerViewModel
+@{
+    ViewBag.Title = "Edite";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<h2>تعديل عميل </h2>
+
+<style>
+    .col-lg-6 {
+        margin-top: 15px;
+    }
+
+    .col-sm-6 {
+        margin-top: 15px;
+    }
+
+    .col-xs-6 {
+        margin-top: 15px;
+    }
+</style>
+
+
+@using (Html.BeginForm("Edite", "Customer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+
+    <div class="row">
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+            <label class="label label-info">اسم المشترك </label>
+
+            @Html.TextBoxFor(a => a.name, new { @class = "form-control", placeholder = "اسم المشترك" })
+            @Html.ValidationMessageFor(a => a.name)
+        </div>
+
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+            <label class="label label-info">رقم الموبايل </label>
+
+            @Html.TextBoxFor(a => a.phone, new { @class = "form-control", placeholder = "رقم الموبايل " })
+            @Html.ValidationMessageFor(a => a.phone)
+        </div>
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+            <label class="label label-info">الطول </label>
+
+            @Html.TextBoxFor(a => a.Height, new { @class = "form-control", placeholder = "الطول " })
+
+        </div>
+
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+            <label class="label label-info">الوزن </label>
+
+            @Html.TextBoxFor(a => a.Weight, new { @class = "form-control", placeholder = "الوزن " })
+
+        </div>
+
+
+       
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+            <div>
+           <label class="label label-info">بداية الاشتراك</label> 
+            <input type="date" class="form-control" name="Startdate" value="@Model.Startdate.ToString("yyyy/MM/dd")" />
+            @Html.ValidationMessageFor(a=>a.Startdate)
+            </div>
+                  <div>
+
+                      <label class="label label-info">نهاية الاشتراك</label> 
+
+                      <input type="date" class="form-control" name="Enddate" value="@Model.Enddate.ToString("yyyy/MM/dd")" />
+                      @Html.ValidationMessageFor(a => a.Enddate)
+
+                  </div>
+        </div>
+
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+
+            <input type="submit" value="تعديل الاشتراك " class="btn btn-success" />
+
+
+        </div>
+
+
+
+
+    </div>
+    <br />
+
+
+  
+
+
+
+}

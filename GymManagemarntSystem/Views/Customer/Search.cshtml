@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<h2>بحث عن عميل</h2>
+
+
+
+<center>
+
+    @using (Html.BeginForm("SearchByPhone", "Customer", FormMethod.Get))
+    {
+
+        <input type="text" name="phone" id="search" class="focus" style="padding:10px;text-align:center" placeholder="بحث عن عميل" />
+
+        <input type="submit" class="btn btn-primary" value="بحث" />
+    }
+
+</center>

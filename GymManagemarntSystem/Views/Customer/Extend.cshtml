@@ -1,0 +1,69 @@
+﻿@model  GymManagemarntSystem.Models.ExtendViewModel
+@{
+    ViewBag.Title = "Extend";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<h2>تجديد اشتراك عميل</h2>
+
+
+@using (Html.BeginForm())
+{
+    <center>
+
+        <table class="table table-bordered table-striped" style="text-align:center;font-size:18px;">
+
+            <tbody>
+
+                <tr>
+                    <td style="font-weight:bold"> اسم العميل </td>
+                    <td style="font-weight:bold"> رقم الموبايل  </td>
+
+                </tr>
+
+                <tr>
+                    <td>@Model.customer.Name  </td>
+                    <td> @Model.customer.Phone  </td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold"> بداية الاشتراك  </td>
+                    <td style="font-weight:bold"> نهاية الاشتراك  </td>
+
+                </tr>
+
+                <tr>
+                    <td>@Model.customer.Startdate.Value.ToString("yyyy/MM/dd")  </td>
+                    <td> @Model.customer.Enddate.Value.ToString("yyyy/MM/dd")  </td>
+                </tr>
+
+                <tr>
+
+                    <td> @Html.DropDownList("Subscription_ID", null, "نوع الاشتراك ", new { @class = "form-control" })
+                    
+                        <input type="hidden" name="sessionID" value="@Session.SessionID" />
+                     </td>
+
+                    
+
+                    <td> <input type="submit" class="btn btn-success"  value="تجديد" /> </td>
+                </tr>
+
+            </tbody>
+
+
+        </table>
+        
+       
+
+
+
+
+      
+
+
+
+    </center>
+
+
+}

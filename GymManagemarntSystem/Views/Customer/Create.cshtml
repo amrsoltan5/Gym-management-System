@@ -1,0 +1,109 @@
+﻿@model GymManagemarntSystem.Models.CustomerViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<h3> اضافة مشترك جديد </h3>
+<h5>@ViewBag.date</h5>
+<br />
+
+
+
+<style>
+
+    
+    .col-lg-6 {
+        margin-top:15px;
+    }
+
+     .col-sm-6 {
+        margin-top:15px;
+    }
+
+      .col-xs-6 {
+        margin-top:15px;
+    }
+
+</style>
+
+
+@using (Html.BeginForm("Create","Customer",FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+   
+
+
+    <div class="row">
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+           
+            @Html.TextBoxFor(a=>a.name,new  {@class="form-control", placeholder="اسم المشترك" })
+            @Html.ValidationMessageFor(a=>a.name)
+        </div>
+
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+
+            @Html.TextBoxFor(a => a.phone, new { @class = "form-control", placeholder = "رقم الموبايل " })
+            @Html.ValidationMessageFor(a=>a.phone)
+        </div>
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+
+            @Html.TextBoxFor(a => a.Height, new { @class = "form-control", placeholder = "الطول " })
+            
+        </div>
+
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+
+            @Html.TextBoxFor(a => a.Weight, new { @class = "form-control", placeholder = "الوزن " })
+           
+        </div>
+
+
+
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+
+            @Html.DropDownList("Subscription_ID",null, "-----نوع الاشتراك-----",new {@class="form-control" });
+            
+              @Html.ValidationMessageFor(a => a.Subscription_ID)
+        </div>
+
+
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+
+            <div class="file-field">
+
+                <div class="d-flex justify-content-center">
+                    <div class="btn btn-mdb-color btn-rounded float-left">
+                        <span>اختر صورة</span>
+                        <input type="file" name="file">
+                    </div>
+                </div>
+            </div>
+          
+
+        </div>
+
+
+     
+
+    </div>
+    <br />
+   
+
+        <input type="submit" value="تسجيل مشترك جديد" class="btn btn-success" />
+
+
+
+}
+
+

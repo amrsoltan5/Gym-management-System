@@ -1,0 +1,279 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_Layout.cshtml";
+}
+<style>
+
+    .waves-button-input{
+        
+
+    }
+</style>
+<script src="~/AdminPanel/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+
+    
+    $(function () {
+
+        //Change Paasword
+        $("#changpassword").click(function () {
+
+            var oldpass = $("#OldPassword").val();
+            var newpass = $("#NewPassword").val();
+            var retypenewpass = $("#RetypeNewPassword").val();
+            var token = $("#_token").val();
+
+            $.ajax({
+
+                url: "/Settings/ChangeUserPassword",
+                data: { oldpassword: oldpass, newpassword: newpass, retypenewpassword: retypenewpass, token:token},
+                type: "post",
+                success: function (data) {
+
+                    $("#OldPassword").val("");
+                    $("#NewPassword").val("");
+                    $("#RetypeNewPassword").val("");
+                    
+                    $("#passwordvalidation").children().remove();
+                   
+                    
+                        $("#passwordvalidation").append("<label  class='label-success'> '" + data + "'  </label>");
+                 
+                }
+
+            });
+
+            
+           
+
+        });
+
+
+
+        //Insert New User
+
+        $("#adduser").click(function () {
+
+            var name = $("#name").val();
+            var password = $("#password").val();
+            var Role = $("#Role").find(":selected").val();
+           
+            $.ajax({
+
+                url: "/Settings/addUser",
+                type: "post",
+                data: { name: name, password :password,Role:Role},
+                success: function (data) {
+
+                    $("#adduserinfo").text(data);
+                    $("#password").val("");
+                    $("#name").val("");
+                }
+
+            });
+
+        });
+
+
+        // eshtrakat and pricese
+
+
+        $("#addsup").click(function () {
+
+            var subtypename = $("#subtypename").val();
+            var price = $("#supprice").val();
+            var period = $("#period").val();
+
+            $.ajax({
+
+                url: "/Settings/addsubscriptionType",
+                type: "post",
+                data: { subscription_name: subtypename, Price: price, Days: period },
+                success: function (data) {
+
+                    $("#priceseinfo").text(data);
+                    $("#subtypename").val("");
+                    $("#supprice").val("");
+                    $("#period").val("");
+                }
+
+            });
+
+        });
+
+
+
+
+        // Backup database
+
+
+        $("#backup").click(function () {
+
+            $.ajax({
+
+                url: "/Settings/BackupDB",
+                data: "",
+                success: function (data) {
+
+                    $("#BackupDone").text(data);
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+<h3>تغير كلمة المرور</h3>
+
+    <div class="row"">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+            <input type="password" id="OldPassword" class="form-control" placeholder="كلمة السر القديمة"  required/>
+            <input type="hidden" id="_token" value="@Session.SessionID" />
+            @Html.ValidationSummary(true)
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+            <input type="password" id="NewPassword" class="form-control" placeholder="كلمة السر الجديدة" required />
+
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+            <input type="password" id="RetypeNewPassword" class="form-control" placeholder="اعد كتابة كلمة السر الجديدة" required />
+
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+            <input type="button" id="changpassword" value="حفظ" style="margin-top:10px; padding:10px 50px;" class="btn btn-success" />
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div id="passwordvalidation" style="margin-top:10px;">
+
+            
+
+           </div>
+        </div>
+
+    </div>
+
+<br />
+
+<div  style="border-bottom:2px solid black;margin-bottom:5px; margin-top:4px;"></div>
+@if (Session["Role"].ToString() == "admin")
+{
+<div>
+    <h3> اضافة مستخدم للنظام </h3>
+</div>
+
+<div class="row">
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <input type="text" class="form-control" id="name" placeholder="اسم المستخدم" />
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <input type="text" class="form-control" id="password" placeholder="كلمة المرور " />
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+      <select class="form-control" id="Role" name="Role">
+          <option>---- اختر الصلاحية----</option>
+          <option value="admin">مدير النظام</option>
+          <option value="user"> مسئول النظام</option>
+
+      </select>
+
+       
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <input type="button" class="btn btn-success" style="margin-top:10px; padding:10px 50px;" id="adduser" value="اضافة"  />
+        <label class="label-info" id="adduserinfo">  </label>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <a href="/Settings/users"> <input type="button" class="btn btn-success" style="margin-top:10px; padding:10px 50px;" id="adduser" value="قائمة المستخدمين للنظام" /></a>
+
+    </div>
+
+
+
+</div>
+<br />
+<div style="border-bottom:2px solid black;margin-bottom:5px; margin-top:4px;"></div>
+}
+<div>
+    <h3> تحديد الاشتراكات واسعارها </h3>
+</div>
+<div class="row">
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <input type="text" class="form-control" id="subtypename" placeholder="نوع الاشتراك" />
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <input type="text" class="form-control" id="supprice" placeholder="سعر الاشتراك " />
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <input type="number" class="form-control" id="period" placeholder="فترة الاشتراك بالايام  " />
+
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <input type="submit" class="btn btn-success" style="margin-top:10px; padding:10px 50px;" id="addsup" value="اضافة نوع جديد " />
+        <label class="label-info" id="priceseinfo"> </label>
+    </div>
+
+
+</div>
+<br />
+<div style="border-bottom:2px solid black;margin-bottom:5px; margin-top:4px;"></div>
+
+<div>
+    <h3> اخذ نسخة  من قاعدة البيانات </h3>
+</div>
+
+<div class="row">
+
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <input type="submit" class="btn btn-success" style="margin-top:10px; padding:10px 50px;" id="backup" value="اخذ نسخة من قاعدة البيانات" />
+
+        <label id="BackupDone" class="label-info"> </label>
+    </div>
+
+
+</div>
+
+<br />
+<div style="border-bottom:2px solid black;margin-bottom:5px; margin-top:4px;"></div>
+

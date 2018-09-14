@@ -1,0 +1,64 @@
+﻿@model IEnumerable<GymManagemarntSystem.Models.user>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<style>
+    table thead tr th {
+        font-family: Arabia;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table tbody tr td {
+        text-align: center;
+        font-family: Arial;
+    }
+</style>
+
+
+<h2>قائمة مستخدمين النظام</h2>
+
+
+
+<div id="collapse4" class="body">
+    <div id="dataTable_wrapper" class="row">
+        <div class="col-sm-12">
+            <table id="dataTable" class="table table-bordered table-condensed table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTable_info">
+                <thead>
+                    <tr>
+                        <th>رقم المستخدم</th>
+                        <th> اسم المستخدم </th>
+                        <th>كلمة المرور</th>
+                        <th> الصلاحية </th>
+                        <th> حذف </th>
+                        
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr class="active">
+
+                            <td>@item.ID</td>
+                            <td>@item.UserName</td>
+                            <td>@item.Password</td>
+                            <td>@item.Role</td>
+                            <td> <a href="/Settings/Deleteusers/@item.ID"> <input type="button" class="btn btn-danger" value="حذف" />  </a> </td>
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

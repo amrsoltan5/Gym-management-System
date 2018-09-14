@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<script src="~/AdminPanel/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+<script>
+    
+    $(function () {
+
+        setInterval(function () {
+
+            $.ajax(
+                {
+                url:"/Home/CustomerCount",
+                data: "",
+                success: function (data) {
+
+                    $("#customerCount").text(data);
+                }
+                });
+
+            $.ajax(
+              {
+                  url: "/Home/ValidCount",
+                  data: "",
+                  success: function (data) {
+
+                      $("#validCount").text(data);
+                  }
+              });
+           
+        },5000)
+
+    });
+
+</script>
+
+<h1>
+    الصفحة الرئيسية
+
+</h1>
+
+    <!-- Small boxes (Stat box) -->
+<div class="row">
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3 id="customerCount"></h3>
+                <h4>العملاء </h4>
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+            <a href="/Customer/Index" class="small-box-footer"> اظهار العملاء <i class="fa fa-arrow-circle-left"></i></a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3 id="validCount"> </h3>
+                <h4>المفعلين </h4>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="/Customer/GetValid" class="small-box-footer">اظهار  <i class="fa fa-arrow-circle-left"></i></a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-yellow">
+            <div class="inner">
+                <h3>العملاء </h3>
+                <h4> اضافة عميل  </h4>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            <a href="/Customer/Create" class="small-box-footer">اضافة<i class="fa fa-arrow-circle-left"></i></a>
+        </div>
+    </div><!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-red">
+            <div class="inner">
+                <h3>الاعدادات</h3>
+                <h4> تعديل بيانات  النظام </h4>
+            </div>
+            <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="/Settings/Index" class="small-box-footer"> اعدادات النظام <i class="fa fa-arrow-circle-left"></i></a>
+        </div>
+    </div><!-- ./col -->
+</div><!-- /.row -->
+<!-- Main row -->

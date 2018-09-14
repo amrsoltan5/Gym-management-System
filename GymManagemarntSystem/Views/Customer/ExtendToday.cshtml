@@ -1,0 +1,67 @@
+﻿@model IEnumerable<GymManagemarntSystem.Models.Extend>
+
+@{
+    ViewBag.Title = "ExtendToday";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<h2>الاشتراكات المجددة اليوم</h2>
+
+
+<table class="table table-hover table-bordered table-responsive" style="text-align:center;font-size:17px">
+
+    <thead>
+        <tr>
+            <th>رقم العملية</th>
+            <th>اسم المسئول عن العملية</th>
+            <th>تاريخ تجديد الاشتراك </th>
+            <th>اسم العميل</th>
+            <th>رقم الموبايل</th>
+            <th>بداية الاشتراك</th>
+            <th>نهاية الاشتراك</th>
+            <th>نوع الاشتراك</th>
+            
+   
+        </tr>
+
+    </thead>
+
+    <tbody>
+        
+        @if (Model.Count() > 0)
+        {
+
+        foreach (var item in Model)
+           {
+
+            <tr class="active">
+
+                <td>@item.id</td>
+                <td>@item.user.UserName</td>
+                <td>@item.Extenddate.Value.ToString("yyyy/MM/dd")</td>
+                <td>@item.customer.Name</td>
+                <td>@item.customer.Phone</td>
+                <td>@item.customer.Startdate.Value.ToString("yyyy/MM/dd")</td>
+                <td>@item.customer.Enddate.Value.ToString("yyyy/MM/dd")</td>
+                <td>@item.subscriptionType.subscription_name</td>
+
+            </tr>
+
+           }
+        }
+        else
+        {
+        
+            <tr> <td> لا يوجد تجديدات اليوم </td> </tr>
+        }
+
+
+    </tbody>
+
+
+    <tfoot>
+
+    </tfoot>
+
+
+</table>

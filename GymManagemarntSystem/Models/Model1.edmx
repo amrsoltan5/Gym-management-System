@@ -1,0 +1,575 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="GymSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="attend">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttendDate_Now" Type="datetime" />
+          <Property Name="Customer_ID" Type="int" />
+          <Property Name="AttendNumber" Type="int" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Height" Type="int" />
+          <Property Name="Weight" Type="int" />
+          <Property Name="Startdate" Type="date" />
+          <Property Name="Enddate" Type="date" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="350" />
+          <Property Name="Subscription_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="Extend">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userid" Type="int" />
+          <Property Name="Extenddate" Type="date" />
+          <Property Name="customerID" Type="int" />
+          <Property Name="subscriptionID" Type="int" />
+        </EntityType>
+        <EntityType Name="subscriptionType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subscription_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Price" Type="float" />
+          <Property Name="Days" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="_token" Type="nvarchar" MaxLength="150" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_attend_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="attend" Type="Self.attend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="attend">
+              <PropertyRef Name="Customer_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_subscriptionType">
+          <End Role="subscriptionType" Type="Self.subscriptionType" Multiplicity="0..1" />
+          <End Role="customer" Type="Self.customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriptionType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="customer">
+              <PropertyRef Name="Subscription_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Extend_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="Extend" Type="Self.Extend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Extend">
+              <PropertyRef Name="customerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Extend_subscription">
+          <End Role="subscriptionType" Type="Self.subscriptionType" Multiplicity="0..1" />
+          <End Role="Extend" Type="Self.Extend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriptionType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Extend">
+              <PropertyRef Name="subscriptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Extend_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="Extend" Type="Self.Extend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Extend">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_BackupDB" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetNonValide" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetValide" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="GymSystemModelStoreContainer">
+          <EntitySet Name="attend" EntityType="Self.attend" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Extend" EntityType="Self.Extend" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="subscriptionType" EntityType="Self.subscriptionType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_attend_customer" Association="Self.FK_attend_customer">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="attend" EntitySet="attend" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_subscriptionType" Association="Self.FK_customer_subscriptionType">
+            <End Role="subscriptionType" EntitySet="subscriptionType" />
+            <End Role="customer" EntitySet="customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Extend_customer" Association="Self.FK_Extend_customer">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="Extend" EntitySet="Extend" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Extend_subscription" Association="Self.FK_Extend_subscription">
+            <End Role="subscriptionType" EntitySet="subscriptionType" />
+            <End Role="Extend" EntitySet="Extend" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Extend_user" Association="Self.FK_Extend_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="Extend" EntitySet="Extend" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GymSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="attend">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttendDate_Now" Type="DateTime" Precision="3" />
+          <Property Name="Customer_ID" Type="Int32" />
+          <Property Name="AttendNumber" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_attend_customer" FromRole="attend" ToRole="customer" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Height" Type="Int32" />
+          <Property Name="Weight" Type="Int32" />
+          <Property Name="Startdate" Type="DateTime" Precision="0" />
+          <Property Name="Enddate" Type="DateTime" Precision="0" />
+          <Property Name="Photo" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Subscription_ID" Type="Int32" />
+          <NavigationProperty Name="attends" Relationship="Self.FK_attend_customer" FromRole="customer" ToRole="attend" />
+          <NavigationProperty Name="subscriptionType" Relationship="Self.FK_customer_subscriptionType" FromRole="customer" ToRole="subscriptionType" />
+          <NavigationProperty Name="Extends" Relationship="Self.FK_Extend_customer" FromRole="customer" ToRole="Extend" />
+        </EntityType>
+        <EntityType Name="Extend">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userid" Type="Int32" />
+          <Property Name="Extenddate" Type="DateTime" Precision="0" />
+          <Property Name="customerID" Type="Int32" />
+          <Property Name="subscriptionID" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_Extend_customer" FromRole="Extend" ToRole="customer" />
+          <NavigationProperty Name="subscriptionType" Relationship="Self.FK_Extend_subscription" FromRole="Extend" ToRole="subscriptionType" />
+          <NavigationProperty Name="user" Relationship="Self.FK_Extend_user" FromRole="Extend" ToRole="user" />
+        </EntityType>
+        <EntityType Name="subscriptionType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subscription_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="Days" Type="Int32" />
+          <NavigationProperty Name="customers" Relationship="Self.FK_customer_subscriptionType" FromRole="subscriptionType" ToRole="customer" />
+          <NavigationProperty Name="Extends" Relationship="Self.FK_Extend_subscription" FromRole="subscriptionType" ToRole="Extend" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="C_token" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Extends" Relationship="Self.FK_Extend_user" FromRole="user" ToRole="Extend" />
+        </EntityType>
+        <Association Name="FK_attend_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="attend" Type="Self.attend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="attend">
+              <PropertyRef Name="Customer_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_subscriptionType">
+          <End Role="subscriptionType" Type="Self.subscriptionType" Multiplicity="0..1" />
+          <End Role="customer" Type="Self.customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriptionType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="customer">
+              <PropertyRef Name="Subscription_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Extend_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="Extend" Type="Self.Extend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Extend">
+              <PropertyRef Name="customerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Extend_subscription">
+          <End Role="subscriptionType" Type="Self.subscriptionType" Multiplicity="0..1" />
+          <End Role="Extend" Type="Self.Extend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscriptionType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Extend">
+              <PropertyRef Name="subscriptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Extend_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="Extend" Type="Self.Extend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Extend">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GymSystem" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="attends" EntityType="Self.attend" />
+          <EntitySet Name="customers" EntityType="Self.customer" />
+          <EntitySet Name="Extends" EntityType="Self.Extend" />
+          <EntitySet Name="subscriptionTypes" EntityType="Self.subscriptionType" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_attend_customer" Association="Self.FK_attend_customer">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="attend" EntitySet="attends" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_subscriptionType" Association="Self.FK_customer_subscriptionType">
+            <End Role="subscriptionType" EntitySet="subscriptionTypes" />
+            <End Role="customer" EntitySet="customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Extend_customer" Association="Self.FK_Extend_customer">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="Extend" EntitySet="Extends" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Extend_subscription" Association="Self.FK_Extend_subscription">
+            <End Role="subscriptionType" EntitySet="subscriptionTypes" />
+            <End Role="Extend" EntitySet="Extends" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Extend_user" Association="Self.FK_Extend_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="Extend" EntitySet="Extends" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_BackupDB" />
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(GymSystemModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(GymSystemModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="spGetNonValide" ReturnType="Collection(GymSystemModel.spGetNonValide_Result)" />
+          <FunctionImport Name="spGetValide" ReturnType="Collection(GymSystemModel.spGetValide_Result)" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spGetNonValide_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Height" Nullable="true" />
+          <Property Type="Int32" Name="Weight" Nullable="true" />
+          <Property Type="DateTime" Name="Startdate" Nullable="true" />
+          <Property Type="DateTime" Name="Enddate" Nullable="true" />
+          <Property Type="String" Name="Photo" Nullable="true" MaxLength="350" />
+          <Property Type="Int32" Name="Subscription_ID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetValide_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Phone" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Height" Nullable="true" />
+          <Property Type="Int32" Name="Weight" Nullable="true" />
+          <Property Type="DateTime" Name="Startdate" Nullable="true" />
+          <Property Type="DateTime" Name="Enddate" Nullable="true" />
+          <Property Type="String" Name="Photo" Nullable="true" MaxLength="350" />
+          <Property Type="Int32" Name="Subscription_ID" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GymSystemModelStoreContainer" CdmEntityContainer="GymSystem">
+          <EntitySetMapping Name="attends">
+            <EntityTypeMapping TypeName="GymSystemModel.attend">
+              <MappingFragment StoreEntitySet="attend">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AttendDate_Now" ColumnName="AttendDate_Now" />
+                <ScalarProperty Name="Customer_ID" ColumnName="Customer_ID" />
+                <ScalarProperty Name="AttendNumber" ColumnName="AttendNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="GymSystemModel.customer">
+              <MappingFragment StoreEntitySet="customer">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Startdate" ColumnName="Startdate" />
+                <ScalarProperty Name="Enddate" ColumnName="Enddate" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Subscription_ID" ColumnName="Subscription_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Extends">
+            <EntityTypeMapping TypeName="GymSystemModel.Extend">
+              <MappingFragment StoreEntitySet="Extend">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="Extenddate" ColumnName="Extenddate" />
+                <ScalarProperty Name="customerID" ColumnName="customerID" />
+                <ScalarProperty Name="subscriptionID" ColumnName="subscriptionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscriptionTypes">
+            <EntityTypeMapping TypeName="GymSystemModel.subscriptionType">
+              <MappingFragment StoreEntitySet="subscriptionType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="subscription_name" ColumnName="subscription_name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="GymSystemModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="GymSystemModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="C_token" ColumnName="_token" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="GymSystemModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_BackupDB" FunctionName="GymSystemModel.Store.sp_BackupDB" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="GymSystemModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="GymSystemModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="GymSystemModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GymSystemModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="GymSystemModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GymSystemModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="GymSystemModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="GymSystemModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="spGetNonValide" FunctionName="GymSystemModel.Store.spGetNonValide">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GymSystemModel.spGetNonValide_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Startdate" ColumnName="Startdate" />
+                <ScalarProperty Name="Enddate" ColumnName="Enddate" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Subscription_ID" ColumnName="Subscription_ID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetValide" FunctionName="GymSystemModel.Store.spGetValide">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GymSystemModel.spGetValide_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Startdate" ColumnName="Startdate" />
+                <ScalarProperty Name="Enddate" ColumnName="Enddate" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Subscription_ID" ColumnName="Subscription_ID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
